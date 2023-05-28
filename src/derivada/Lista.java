@@ -23,7 +23,7 @@ public class Lista
         return false;
     }
     
-    public void begin(String dato)
+    public void last(String dato)
     {
         Nodo nuevo;
         
@@ -66,56 +66,113 @@ public class Lista
     
     public void derivada()
     {
-        StringTokenizer separador_x;
-        Nodo impar = inicio;
-        Nodo par = impar.getSiguiente();
+        Nodo funcion;
         
-        int iterador = 1;
-        int constante, potencia, multiplicacion;
-        String variable = "x";
+        int constante, potencia;
+        String ecuacion;
         
-        while(par != null)
+        funcion = inicio;
+        
+        while(funcion != null)
         {
-            if((iterador % 2) == 0)
+            //simbolo = obtener_simbolo(funcion);
+            constante = obtener_constante(funcion);
+            potencia = obtener_potencia(funcion);
+            ecuacion = evaluar(constante, potencia);
+            
+            funcion.setDato(ecuacion);
+            funcion = funcion.getSiguiente();
+        }
+
+    }
+    
+    public int obtener_simbolo(Nodo funcion)
+    {   
+        switch (funcion.getDato().charAt(0)) {
+            case '+':
+                return 1;
+            case '-':
+                return -1;
+            default:
+                return 1;
+        }
+            
+    }
+    
+    public int obtener_constante(Nodo funcion)                                  //-5x^2
+    {
+        StringTokenizer constante;
+        int valor;
+        
+        if(funcion.getDato().contains("x"))
+        {
+            constante = new StringTokenizer(funcion.getDato(), "x");
+            valor = Integer.parseInt(constante.nextToken());                  //aqui solo me regresa el -5
+        }
+        else
+        {
+            valor = 0;                                                          //regresa un 0 porque es una constante
+        }
+        
+        System.out.println("La constante es "+valor);
+        return valor;
+    }
+    
+    public int obtener_potencia(Nodo funcion)                                   //-5x^2
+    {
+        StringTokenizer potencia;
+        String cadena = funcion.getDato();
+        int valor;
+        String pot = "";
+        
+        if(cadena.contains("^"))
+        {   
+            potencia = new StringTokenizer(cadena, "^");
+            while(potencia.hasMoreTokens())
             {
-                iterador++;
-                impar = impar.getSiguiente();
-                par = par.getSiguiente();
+                pot = potencia.nextToken();                                     //guardo lo que sigue de ^2 ...-> 2
+            }            
+            valor = Integer.parseInt(pot);
+        }
+        else
+        {
+            valor = 1;                                                          //tiene potencia a la 1  como 5x
+        }
+        
+        return valor;
+    }
+    
+    public String evaluar(int constante, int potencia)
+    {
+        int resultado;
+        int potenciaTotal;
+        String ecuacion;
+        
+        if(constante == 0)
+        {
+            ecuacion = "0";                                                     //aqui mando a 0 porque es una constante
+        }
+        else
+        {
+            potenciaTotal = potencia-1;
+            
+            if(potenciaTotal < 0 || potenciaTotal > 1)
+            {
+                resultado = constante * potencia;
+                ecuacion = String.valueOf(resultado)+"x^"+String.valueOf(potenciaTotal);
+            }
+            else if (potenciaTotal == 1)
+            {
+                resultado = constante * potencia;
+                ecuacion = String.valueOf(resultado)+"x";
             }
             else
             {
-                if(impar.getDato().contains("x"))
-                {
-                    separador_x = new StringTokenizer(impar.getDato(), "x");
-                    constante = Integer.parseInt(separador_x.nextToken());
-                    potencia = Integer.parseInt(par.getDato());
-
-                    multiplicacion = constante * potencia;
-
-                    potencia -= 1;
-
-                    par.setDato(String.valueOf(potencia));
-
-                    if(potencia != 0)
-                    {
-                        impar.setDato(String.valueOf(multiplicacion)+variable);         //concatenamos 5 con x = 5x
-                    }
-                    else
-                    {
-                        impar.setDato(String.valueOf(multiplicacion));
-                    }
-                }
-                else
-                {
-                    impar.setDato("0");
-                    par.setDato("0");
-                }
-                
-                iterador++;
-                impar = impar.getSiguiente();
-                par = par.getSiguiente();
+                resultado = constante * potencia;
+                ecuacion = String.valueOf(resultado);
             }
         }
         
+        return ecuacion;
     }
 }

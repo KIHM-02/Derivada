@@ -10,37 +10,25 @@ public class Main
 {
     public static void main(String[] args) 
     {
+        StringTokenizer separacion;
+        
         Scanner scan = new Scanner(System.in);
         Lista lista = new Lista();
         
-        StringTokenizer cadena, separador_Potencia;
-        
-        String elementos, espacio;
-        String delimOperador = "+- ";
-        String delimPotencia = "^";
-        
+        String elementos;
+     
         System.out.print("Derivadas....\nInserte la funcion\nf(x) = ");
             elementos = scan.nextLine();
             
-        espacio = elementos.replaceAll(" +", "").trim();                        // " +" elimina todo espacio,      por ejemplo...
-    
-        cadena = new StringTokenizer(espacio, delimOperador);
+        separacion = new StringTokenizer(elementos, " ");               //separa las ecuaciones gracias a los espacios
         
-        while(cadena.hasMoreTokens())
+        while(separacion.hasMoreTokens())
         {
-            separador_Potencia = new StringTokenizer(cadena.nextToken(), delimPotencia);
-            
-            while(separador_Potencia.hasMoreTokens())
-            {
-                  lista.begin(separador_Potencia.nextToken());
-            }
+            lista.last(separacion.nextToken());                             // guardamos 5x^2 +2x^2 etc (el simbolo debe estar pegado
         }
         
-        lista.display_data();
-        System.out.println("Derivando.....");
         lista.derivada();
         lista.display_data();
-        
     }
     
 }
