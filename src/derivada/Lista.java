@@ -4,7 +4,7 @@ import java.util.StringTokenizer;
 
 /**
  *
- * @author Kevin Huerta
+ * @author Kevin Huerta 22310411
  */
 public class Lista 
 {
@@ -41,6 +41,37 @@ public class Lista
         }
     }
     
+    public void deleteData()
+    {
+        Nodo temporal;
+        
+        if(isEmpty())
+        {
+            System.out.println("La lista esta vacia");
+        }
+        else
+        {
+            temporal = inicio;
+            
+            if(temporal == ultimo)
+            {
+                inicio = null;
+                ultimo = null;
+            }
+            else
+            {
+                while(temporal.getSiguiente() != ultimo)
+                {
+                    temporal = temporal.getSiguiente();
+                }
+                
+                temporal.setSiguiente(null);
+                ultimo = temporal;
+                System.out.println("Se ha borrado el ultimo elemento");
+            }
+        }
+    }
+    
     public void display_data()
     {
         Nodo temporal;
@@ -52,19 +83,18 @@ public class Lista
         else
         {
             temporal = inicio;
-            
+            System.out.print("f'(x) =");
             while(temporal != null)
             {
-                System.out.println(" "+temporal.getDato());
+                System.out.print(" "+temporal.getDato());
                 temporal = temporal.getSiguiente();
             }
         }
     }
-    
-    
+     
     //operaciones de derivacion
     
-    public void derivada()
+    public void derivar_funcion()
     {
         Nodo funcion;
         
@@ -86,19 +116,6 @@ public class Lista
 
     }
     
-    public int obtener_simbolo(Nodo funcion)
-    {   
-        switch (funcion.getDato().charAt(0)) {
-            case '+':
-                return 1;
-            case '-':
-                return -1;
-            default:
-                return 1;
-        }
-            
-    }
-    
     public int obtener_constante(Nodo funcion)                                  //-5x^2
     {
         StringTokenizer constante;
@@ -113,8 +130,6 @@ public class Lista
         {
             valor = 0;                                                          //regresa un 0 porque es una constante
         }
-        
-        System.out.println("La constante es "+valor);
         return valor;
     }
     
