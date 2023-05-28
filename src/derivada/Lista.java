@@ -14,6 +14,7 @@ public class Lista
     public Lista()
     {
         inicio = null;
+        ultimo = null;
     }
     
     public boolean isEmpty()
